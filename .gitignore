@@ -1,0 +1,9 @@
+/out/
+/target/
+/.idea/*
+!/.idea/artifacts
+!/.idea/vcs.xml
+
+lpfx.iml
+lpfx.ipr
+lpfx.iws
