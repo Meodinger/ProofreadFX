@@ -1,4 +1,4 @@
-package info.meodinger.prfx
+package ink.meodinger.prfx
 
 import info.meodinger.lpfx.options.Logger
 import info.meodinger.lpfx.options.Options

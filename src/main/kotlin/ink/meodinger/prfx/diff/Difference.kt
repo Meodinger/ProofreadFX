@@ -1,4 +1,4 @@
-package info.meodinger.prfx.diff
+package ink.meodinger.prfx.diff
 
 /**
  * Author: Meodinger
