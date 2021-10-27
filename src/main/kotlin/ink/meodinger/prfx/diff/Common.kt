@@ -89,6 +89,10 @@ fun diff(ori: String, dst: String): List<Difference> {
     diffs.addAll(lcs(processedOri, processedDst))
     if (suffixString.isNotEmpty()) diffs.add(Equal(suffixString))
 
+    // merge
+    merge(diffs)
+
+    // cleanup
     // cleanupSemanticLossless(diffs)
 
     return diffs
@@ -199,6 +203,7 @@ private fun halfMatchI(longText: String, shortText: String, i: Int): List<String
     }
 }
 
+// LCS Algorithm
 private enum class Direction { EQUAL, LEFT_UP, UP, LEFT, NULL }
 private class Matrix(private val value: Array<IntArray>) {
 
@@ -233,6 +238,9 @@ fun lcs(ori: String, dst: String): List<Difference> {
         if (c == 0) return@Matrix r
         0
     }
+
+    // If a[r] == b[c] -> LD(r + 1, c + 1) = LD(r, c)
+    // If a[r] != b[c] -> LD(r + 1, c + 1) = Min(LD(r, c), LD(r, c + 1), LD(r + 1, c)) + 1
     for (r in ori.indices) for (c in dst.indices) matrix[r + 1, c + 1] =
         if (ori[r] == dst[c]) matrix[r, c]
         else matrix[r, c].coerceAtMost(matrix[r, c + 1]).coerceAtMost(matrix[r + 1, c]) + 1
@@ -243,6 +251,8 @@ fun lcs(ori: String, dst: String): List<Difference> {
     val diffs = LinkedList<Difference>()
     var lastDirection: Direction = Direction.NULL
 
+    // If a[r] == b[c] -> Left Up (Equal)
+    // If a[r] != b[c] -> Min(Left-Up, Up, Left)
     while (row != 0 || col != 0) {
         val canUp = row > 0
         val canLeft   = col > 0
@@ -313,6 +323,11 @@ fun lcs(ori: String, dst: String): List<Difference> {
         }
     }
 
+    return diffs
+}
+
+// Merge same difference
+private fun merge(diffs: LinkedList<Difference>) {
     if (diffs.size > 2) {
         var prevDiff = diffs[0]
         var thisPointer = 1
@@ -326,15 +341,11 @@ fun lcs(ori: String, dst: String): List<Difference> {
             thisPointer++
         } while (thisPointer < diffs.size)
     }
-
-    return diffs
 }
-
 
 /**
  * @see <a href="https://neil.fraser.name/writing/diff/">Diff Strategies</a>
  */
-
 // Look for single edits surrounded on both sides by equalities
 // which can be shifted sideways to align the edit to a word boundary.
 // e.g: The c<ins>at c</ins>ame. -> The <ins>cat </ins>came.

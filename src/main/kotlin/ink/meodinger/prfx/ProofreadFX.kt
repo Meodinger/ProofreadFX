@@ -1,8 +1,8 @@
 package ink.meodinger.prfx
 
-import info.meodinger.lpfx.component.common.CTextSlider
-import info.meodinger.lpfx.options.Logger
-import info.meodinger.lpfx.options.Options
+import ink.meodinger.lpfx.component.common.CTextSlider
+import ink.meodinger.lpfx.options.Logger
+import ink.meodinger.lpfx.options.Options
 
 import javafx.application.Application
 import javafx.scene.Scene
